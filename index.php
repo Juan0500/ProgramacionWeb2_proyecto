@@ -64,12 +64,29 @@ if (isset($_GET['salvar'])) {
             font-size: 5.5em;
             color: #007bff;
         }
+
+        .titulo-com-imagem {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .titulo-com-imagem img {
+            height: 140px;
+            width: auto;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Aura Rank</h1>
-        <h2>Lista de Usuarios</h1>
+        <h1 class="titulo-com-imagem">
+            <img src="./images/goku.png" alt="Goku">
+            Aura Rank
+        </h1>
+
+        <h2>Lista de Usuarios</h2>
+
         <?php echo $mensagem; ?>
         <p><a href="cadastro.php">Cadastrar novo usuário</a></p>
         <table border="1">
