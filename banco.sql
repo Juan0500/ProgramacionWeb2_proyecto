@@ -7,3 +7,10 @@ CREATE TABLE IF NOT EXISTS usuario (
     idade INT NOT NULL,
     pontuacao DECIMAL(10,2) NOT NULL
 );
+
+INSERT INTO usuario (nome, idade, pontuacao) VALUES
+('Emacel Ulares', 21, 450),
+('Marcos Schlick', 21, 100000),
+('Bruno Fofito', 21, 80),
+('Santi Iago', 21, 600),
+('Willião Meireles', 22, 150);
