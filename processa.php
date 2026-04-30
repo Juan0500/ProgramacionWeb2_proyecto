@@ -25,7 +25,7 @@ if ($_POST) {
         $idade = $_POST["idade"]; //para Bruno: assim deve se chamar(name) o input idade
         $pontuacao = $_POST["pontuacao"]; //para Bruno: assim deve se chamar(name) o input pontuacao
 
-        $resultado =  editarUsuario($nome, $idade, $pontuacao); //para William: asim deveria se chamar a função de editar um usuario
+        $resultado =  editarUsuario($id, $nome, $idade, $pontuacao); //para William: asim deveria se chamar a função de editar um usuario
 
         if ($resultado) {
             header("location: index.php?salvar=OK");
@@ -39,7 +39,7 @@ if ($_POST) {
     if (isset($_GET["deletar"])) {
         $id = $_GET["id"]; //para Marcos: assim deve se chamar o parámetro na URL para receber o ID.
 
-        $resultado =  deletarUsuario(); //para William: asim deveria se chamar a função de deletar um usuario
+        $resultado =  deletarUsuario($id); //para William: asim deveria se chamar a função de deletar um usuario
 
         if ($resultado) {
             header("location: index.php?salvar=OK");
