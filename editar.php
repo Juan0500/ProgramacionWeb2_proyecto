@@ -18,7 +18,9 @@ if (!$usuario) {
 <head>
     <meta charset="UTF-8">
     <title>Aura Rank</title>
-        <style>
+    <link rel="icon" href="./images/goku.png" />
+
+    <style>
         body {
             font-family: Arial, sans-serif;
             background: #f4f4f4;

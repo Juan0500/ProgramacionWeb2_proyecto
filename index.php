@@ -17,6 +17,7 @@ if (isset($_GET['salvar'])) {
 <head>
     <meta charset="UTF-8">
     <title>Aura Rank</title>
+    <link rel="icon" href="./images/goku.png" />
         <style>
         body {
             font-family: Arial, sans-serif;

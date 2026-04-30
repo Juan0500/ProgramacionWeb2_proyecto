@@ -7,6 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Aura Rank</title>
+    <link rel="icon" href="./images/goku.png" />
 
     <style>
         body {
