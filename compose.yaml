@@ -1,0 +1,23 @@
+services:
+  db:
+    image: mysql:8.4
+    container_name: web-project
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD:
+      MYSQL_DATABASE: db_users
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./banco.sql:/docker-entrypoint-initdb.d/banco.sql
+    networks:
+      - projeto_network
+
+volumes:
+  mysql_data: {}
+
+networks:
+  projeto_network:
+    driver: bridge
