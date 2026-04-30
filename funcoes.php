@@ -56,7 +56,7 @@ function listarUsuarios() {
 
 function calcularStatusAura($pontuacao) {
     if ($pontuacao < 0) {
-        return "Aura Negativa 💀";
+        return "Aura Negativa";
     } elseif ($pontuacao >= 0 && $pontuacao <= 100) {
         return "Aura NPC";
     } elseif ($pontuacao > 100 && $pontuacao <= 500) {
