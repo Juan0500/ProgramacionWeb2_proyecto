@@ -24,7 +24,7 @@ if (!$usuario) {
         * {
             box-sizing: border-box;
         }
-        
+
         body {
             font-family: Arial, sans-serif;
             background: #f4f4f4;
@@ -67,11 +67,28 @@ if (!$usuario) {
             font-size: 3.5em;
             color: #007bff;
         }
+
+        .titulo-com-imagem {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .titulo-com-imagem img {
+            height: 80px;
+            width: auto;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Aura Rank</h1>
+        <h1 class="titulo-com-imagem">
+            <img src="./images/goku.png" alt="Goku">
+            Aura Rank
+            <img src="./images/goku.gif" alt="Goku">
+        </h1>
+
         <h2>Editar Usuario</h2>
 
         <form action="processa.php" method="POST">

@@ -83,6 +83,7 @@ if (isset($_GET['salvar'])) {
         <h1 class="titulo-com-imagem">
             <img src="./images/goku.png" alt="Goku">
             Aura Rank
+            <img src="./images/goku.gif" alt="Goku">
         </h1>
 
         <h2>Lista de Usuarios</h2>
