@@ -12,5 +12,5 @@ INSERT INTO usuario (nome, idade, pontuacao) VALUES
 ('Emacel Ulares', 21, 450),
 ('Marcos Schlick', 21, 100000),
 ('Bruno Fofito', 21, 80),
-('Santi Iago', 21, 600),
-('Willião Meireles', 22, 150);
+('Santi Iago', 21, 300),
+('Williao Meireles', 22, 150);

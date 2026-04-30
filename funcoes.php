@@ -61,8 +61,10 @@ function calcularStatusAura($pontuacao) {
         return "Aura NPC";
     } elseif ($pontuacao > 100 && $pontuacao <= 500) {
         return "Aura Pura";
+    } elseif ($pontuacao > 500 && $pontuacao <= 8000) {
+        return "Aura + Ego";
     } else {
-        return "Aura + Lego";
+        return "Aura é de mais de 8k";
     }
 }
 
