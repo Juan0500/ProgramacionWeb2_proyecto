@@ -57,11 +57,18 @@ if (isset($_GET['salvar'])) {
             background: #0056b3;
             text-decoration: none;
         }
+
+        h1 {
+            text-align: center;
+            font-size: 5.5em;
+            color: #007bff;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Lista de Usuarios</h1>
+        <h1>Aura Rank</h1>
+        <h2>Lista de Usuarios</h1>
         <?php echo $mensagem; ?>
         <p><a href="cadastro.php">Cadastrar novo usuário</a></p>
         <table border="1">

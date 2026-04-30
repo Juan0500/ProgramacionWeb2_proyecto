@@ -50,11 +50,19 @@ if (!$usuario) {
             text-align: center;
             margin-top: 10px;
         }
+        
+        h1 {
+            text-align: center;
+            font-size: 3.5em;
+            color: #007bff;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Editar Usuario</h1>
+        <h1>Aura Rank</h1>
+        <h2>Editar Usuario</h2>
+
         <form action="processa.php" method="POST">
             <input type="hidden" name="atualizar" value="1">
          
