@@ -10,10 +10,15 @@
     <link rel="icon" href="./images/goku.png" />
 
     <style>
+        * {
+            box-sizing: border-box;
+        }
+        
         body {
             font-family: Arial, sans-serif;
             background: #f4f4f4;
         }
+
         .container {
             width: 400px;
             margin: 80px auto;
@@ -22,20 +27,24 @@
             border-radius: 8px;
             box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
         }
+
         input, button {
             width: 100%;
             padding: 8px;
             margin-top: 8px;
         }
+
         button {
             background: #28a745;
             color: white;
             border: none;
             cursor: pointer;
         }
+        
         button:hover {
             background: #218838;
         }
+
         .cancelar {
             display: block;
             text-align: center;
