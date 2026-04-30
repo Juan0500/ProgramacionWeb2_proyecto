@@ -16,7 +16,7 @@ if (isset($_GET['salvar'])) {
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Gerenciar Usuarios</title>
+    <title>Aura Rank</title>
         <style>
         body {
             font-family: Arial, sans-serif;
@@ -63,7 +63,7 @@ if (isset($_GET['salvar'])) {
     <div class="container">
         <h1>Lista de Usuarios</h1>
         <?php echo $mensagem; ?>
-        <p><a href="cadastro.php">Cadastrar novo usuario</a></p>
+        <p><a href="cadastro.php">Cadastrar novo usuário</a></p>
         <table border="1">
             <thead>
                 <tr>

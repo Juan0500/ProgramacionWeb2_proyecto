@@ -17,7 +17,7 @@ if (!$usuario) {
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Editar Usuario</title>
+    <title>Aura Rank</title>
         <style>
         body {
             font-family: Arial, sans-serif;
@@ -57,14 +57,20 @@ if (!$usuario) {
         <h1>Editar Usuario</h1>
         <form action="processa.php" method="POST">
             <input type="hidden" name="atualizar" value="1">
+         
             <input type="hidden" name="id" value="<?php echo $usuario['id']; ?>">
+           
             <label>Nome:</label>
             <input type="text" name="nome" value="<?php echo htmlspecialchars($usuario['nome']); ?>" required><br><br>
+            
             <label>Idade:</label>
             <input type="number" name="idade" value="<?php echo $usuario['idade']; ?>" required><br><br>
-            <label>Pontuacao:</label>
+            
+            <label>Pontuação:</label>
             <input type="number" step="0.01" name="pontuacao" value="<?php echo $usuario['pontuacao']; ?>" required><br><br>
+            
             <input type="submit" value="Salvar">
+            
             <a href="index.php">Cancelar</a>
         </form>
     </div>

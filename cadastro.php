@@ -6,42 +6,39 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Cadastro de Usuário</title>
+    <title>Aura Rank</title>
 
     <style>
         body {
             font-family: Arial, sans-serif;
             background: #f4f4f4;
         }
-
         .container {
-            width: 300px;
+            width: 400px;
             margin: 80px auto;
-            padding: 20px;
             background: white;
+            padding: 20px;
             border-radius: 8px;
             box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
         }
-
-        h2 {
-            text-align: center;
-        }
-
         input, button {
             width: 100%;
             padding: 8px;
             margin-top: 8px;
         }
-
         button {
             background: #28a745;
             color: white;
             border: none;
             cursor: pointer;
         }
-
         button:hover {
             background: #218838;
+        }
+        .cancelar {
+            display: block;
+            text-align: center;
+            margin-top: 10px;
         }
     </style>
 </head>
@@ -64,8 +61,9 @@
         <label>Pontuação:</label>
         <input type="number" name="pontuacao" required>
 
-        <button type="submit">Cadastrar</button>
-
+        <input type="submit" value="Cadastrar">
+        
+        <a href="index.php">Cancelar</a>
     </form>
 </div>
 
