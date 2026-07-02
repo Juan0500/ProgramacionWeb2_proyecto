@@ -1,6 +1,5 @@
 <?php
 ?>
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -39,7 +38,7 @@
             border: none;
             cursor: pointer;
         }
-        
+
         button:hover {
             background: #218838;
         }
@@ -55,7 +54,6 @@
             font-size: 3.5em;
             color: #007bff;
         }
-
 
         .titulo-com-imagem {
             display: flex;
@@ -79,27 +77,24 @@
         Aura Rank
         <img src="./images/goku.gif" alt="Goku">
     </h1>
-    <h2>Cadastro de Usuário</h2>
+    <h2>Cadastro de Categoria de Aura</h2>
 
     <form action="processa.php" method="POST">
 
-        <input type="hidden" name="inserir" value="1">
+        <input type="hidden" name="inserir_categoria" value="1">
 
         <label>Nome:</label>
         <input type="text" name="nome" required>
 
-        <label>Email:</label>
-        <input type="email" name="email" required>
+        <label>Pontuacao Minima:</label>
+        <input type="number" name="pontuacao_minima" required>
 
-        <label>Senha:</label>
-        <input type="password" name="senha" required>
-
-        <label>Pontuação:</label>
-        <input type="number" name="pontuacao" required>
+        <label>Pontuacao Maxima:</label>
+        <input type="number" name="pontuacao_maxima" required>
 
         <input type="submit" value="Cadastrar">
-        
-        <a href="index.php">Cancelar</a>
+
+        <a href="categorias.php" class="cancelar">Cancelar</a>
     </form>
 </div>
 

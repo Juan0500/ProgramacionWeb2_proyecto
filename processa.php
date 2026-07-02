@@ -4,12 +4,14 @@ require("funcoes.php");
 
 if ($_POST) {
     //Inserir Novo Usuario
-    if (isset($_POST['inserir'])) { //para Bruno: assim deve se chamar o input type "hidden" para identificar a ação
-        $nome = $_POST["nome"]; //para Bruno: assim deve se chamar(name) o input nome
-        $idade = $_POST["idade"]; //para Bruno: assim deve se chamar(name) o input idade
-        $pontuacao = $_POST["pontuacao"]; //para Bruno: assim deve se chamar(name) o input pontuacao
+    if (isset($_POST['inserir'])) {
+        $nome = $_POST["nome"];
+        $email = $_POST["email"];
+        $senha = $_POST["senha"];
+        $pontuacao = $_POST["pontuacao"];
+        $categoriaId = buscarCategoriaIdPorPontuacao($pontuacao);
 
-        $resultado = inserirUsuario($nome, $idade, $pontuacao); //para William: asim deveria se chamar a função de criar um usuario
+        $resultado = inserirUsuario($nome, $email, $senha, $pontuacao, $categoriaId);
 
         if ($resultado) {
             header("location: index.php?salvar=OK");
@@ -19,18 +21,51 @@ if ($_POST) {
     }
 
     //Atualizar um Usuario
-    if (isset($_POST['atualizar'])) { //para Marcos: assim deve se chamar o input type "hidden" para identificar a ação
-        $id = $_POST["id"]; //para Marcos: assim deve se chamar o input type "hidden" para receber o ID.
-        $nome = $_POST["nome"]; //para Bruno: assim deve se chamar(name) o input nome
-        $idade = $_POST["idade"]; //para Bruno: assim deve se chamar(name) o input idade
-        $pontuacao = $_POST["pontuacao"]; //para Bruno: assim deve se chamar(name) o input pontuacao
+    if (isset($_POST['atualizar'])) {
+        $id = $_POST["id"];
+        $nome = $_POST["nome"];
+        $email = $_POST["email"];
+        $senha = $_POST["senha"];
+        $pontuacao = $_POST["pontuacao"];
+        $categoriaId = buscarCategoriaIdPorPontuacao($pontuacao);
 
-        $resultado =  editarUsuario($id, $nome, $idade, $pontuacao); //para William: asim deveria se chamar a função de editar um usuario
+        $resultado = editarUsuario($id, $nome, $email, $senha, $pontuacao, $categoriaId);
 
         if ($resultado) {
             header("location: index.php?salvar=OK");
         } else {
             header("location: index.php?salvar=ERROR");
+        }
+    }
+
+    // Inserir Nova Categoria de Aura 
+    if (isset($_POST['inserir_categoria'])) {
+        $nome = $_POST["nome"];
+        $pontuacaoMinima = $_POST["pontuacao_minima"];
+        $pontuacaoMaxima = $_POST["pontuacao_maxima"];
+
+        $resultado = inserirCategoriaAura($nome, $pontuacaoMinima, $pontuacaoMaxima);
+
+        if ($resultado) {
+            header("location: categorias.php?salvar=OK");
+        } else {
+            header("location: categorias.php?salvar=ERROR");
+        }
+    }
+
+    // Atualizar Categoria de Aura
+    if (isset($_POST['atualizar_categoria'])) {
+        $id = $_POST["id"];
+        $nome = $_POST["nome"];
+        $pontuacaoMinima = $_POST["pontuacao_minima"];
+        $pontuacaoMaxima = $_POST["pontuacao_maxima"];
+
+        $resultado = editarCategoriaAura($id, $nome, $pontuacaoMinima, $pontuacaoMaxima);
+
+        if ($resultado) {
+            header("location: categorias.php?salvar=OK");
+        } else {
+            header("location: categorias.php?salvar=ERROR");
         }
     }
 } else if ($_GET) {
@@ -45,6 +80,19 @@ if ($_POST) {
             header("location: index.php?salvar=OK");
         } else {
             header("location: index.php?salvar=ERROR");
+        }
+    }
+
+    // Deletar uma Categoria de Aura 
+    if (isset($_GET["deletar_categoria"])) {
+        $id = $_GET["id"];
+
+        $resultado = deletarCategoriaAura($id);
+
+        if ($resultado) {
+            header("location: categorias.php?salvar=OK");
+        } else {
+            header("location: categorias.php?salvar=ERROR");
         }
     }
 } else {

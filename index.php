@@ -1,7 +1,18 @@
 <?php
 require_once("funcoes.php");
 
-$usuarios = listarUsuarios();
+$filtroNome = isset($_GET['nome']) ? $_GET['nome'] : '';
+$filtroCategoria = isset($_GET['categoria']) ? $_GET['categoria'] : '';
+$filtroMin = isset($_GET['pontuacao_min']) ? $_GET['pontuacao_min'] : '';
+$filtroMax = isset($_GET['pontuacao_max']) ? $_GET['pontuacao_max'] : '';
+
+if ($filtroNome !== '' || $filtroCategoria !== '' || $filtroMin !== '' || $filtroMax !== '') {
+    $usuarios = listarUsuariosFiltro($filtroNome, $filtroCategoria, $filtroMin, $filtroMax);
+} else {
+    $usuarios = listarUsuarios();
+}
+
+$categorias = listarCategoriasAura();
 
 $mensagem = '';
 if (isset($_GET['salvar'])) {
@@ -89,13 +100,42 @@ if (isset($_GET['salvar'])) {
         <h2>Lista de Usuarios</h2>
 
         <?php echo $mensagem; ?>
-        <p><a href="cadastro.php">Cadastrar novo usuário</a></p>
+        <p>
+            <a href="cadastro.php">Cadastrar novo usuário</a>
+            &nbsp;|&nbsp;
+            <a href="categorias.php">Gerenciar categorias de aura</a>
+        </p>
+
+        <form action="index.php" method="GET" style="margin-bottom:15px;">
+            <label>Nome:</label>
+            <input type="text" name="nome" value="<?php echo htmlspecialchars($filtroNome); ?>">
+
+            <label>Categoria:</label>
+            <select name="categoria">
+                <option value="">Todas</option>
+                <?php foreach ($categorias as $categoria): ?>
+                    <option value="<?php echo $categoria['id']; ?>" <?php echo ($filtroCategoria == $categoria['id']) ? 'selected' : ''; ?>>
+                        <?php echo htmlspecialchars($categoria['nome']); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+
+            <label>Pontuação mínima:</label>
+            <input type="number" name="pontuacao_min" value="<?php echo htmlspecialchars($filtroMin); ?>">
+
+            <label>Pontuação máxima:</label>
+            <input type="number" name="pontuacao_max" value="<?php echo htmlspecialchars($filtroMax); ?>">
+
+            <button type="submit">Filtrar</button>
+            <a href="index.php">Limpar filtros</a>
+        </form>
+
         <table border="1">
             <thead>
                 <tr>
                     <th>ID</th>
                     <th>Nome</th>
-                    <th>Idade</th>
+                    <th>Email</th>
                     <th>Pontuacao</th>
                     <th>Status Aura</th>
                     <th>Acoes</th>
@@ -111,9 +151,9 @@ if (isset($_GET['salvar'])) {
                         <tr>
                             <td><?php echo $usuario['id']; ?></td>
                             <td><?php echo htmlspecialchars($usuario['nome']); ?></td>
-                            <td><?php echo $usuario['idade']; ?></td>
-                            <td><?php echo $usuario['pontuacao']; ?></td>
-                            <td><?php echo calcularStatusAura($usuario['pontuacao']); ?></td>
+                            <td><?php echo htmlspecialchars($usuario['email']); ?></td>
+                            <td><?php echo $usuario['pontuacao_atual']; ?></td>
+                            <td><?php echo calcularStatusAura($usuario['pontuacao_atual']); ?></td>
                             <td>
                                 <a href="editar.php?id=<?php echo $usuario['id']; ?>">Editar</a> /
                                 <a href="processa.php?deletar=1&id=<?php echo $usuario['id']; ?>" onclick="return confirm('Tem certeza?')">Excluir</a>

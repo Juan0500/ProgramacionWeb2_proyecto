@@ -98,12 +98,15 @@ if (!$usuario) {
            
             <label>Nome:</label>
             <input type="text" name="nome" value="<?php echo htmlspecialchars($usuario['nome']); ?>" required><br><br>
-            
-            <label>Idade:</label>
-            <input type="number" name="idade" value="<?php echo $usuario['idade']; ?>" required><br><br>
-            
+
+            <label>Email:</label>
+            <input type="email" name="email" value="<?php echo htmlspecialchars($usuario['email']); ?>" required><br><br>
+
+            <label>Senha:</label>
+            <input type="password" name="senha" value="<?php echo htmlspecialchars($usuario['senha']); ?>" required><br><br>
+
             <label>Pontuação:</label>
-            <input type="number" step="0.01" name="pontuacao" value="<?php echo $usuario['pontuacao']; ?>" required><br><br>
+            <input type="number" name="pontuacao" value="<?php echo $usuario['pontuacao_atual']; ?>" required><br><br>
             
             <input type="submit" value="Salvar">
             

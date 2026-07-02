@@ -1,8 +1,16 @@
 <?php
-?>
+require_once("funcoes.php");
 
+$id = $_GET['id'];
+$categoria = buscarCategoriaAuraPorId($id);
+
+if (!$categoria) {
+    header("location: categorias.php");
+    exit;
+}
+?>
 <!DOCTYPE html>
-<html lang="pt-br">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Aura Rank</title>
@@ -39,7 +47,7 @@
             border: none;
             cursor: pointer;
         }
-        
+
         button:hover {
             background: #218838;
         }
@@ -56,7 +64,6 @@
             color: #007bff;
         }
 
-
         .titulo-com-imagem {
             display: flex;
             align-items: center;
@@ -70,38 +77,34 @@
         }
     </style>
 </head>
-
 <body>
+    <div class="container">
+        <h1 class="titulo-com-imagem">
+            <img src="./images/goku.png" alt="Goku">
+            Aura Rank
+            <img src="./images/goku.gif" alt="Goku">
+        </h1>
 
-<div class="container">
-    <h1 class="titulo-com-imagem">
-        <img src="./images/goku.png" alt="Goku">
-        Aura Rank
-        <img src="./images/goku.gif" alt="Goku">
-    </h1>
-    <h2>Cadastro de Usuário</h2>
+        <h2>Editar Categoria de Aura</h2>
 
-    <form action="processa.php" method="POST">
+        <form action="processa.php" method="POST">
+            <input type="hidden" name="atualizar_categoria" value="1">
 
-        <input type="hidden" name="inserir" value="1">
+            <input type="hidden" name="id" value="<?php echo $categoria['id']; ?>">
 
-        <label>Nome:</label>
-        <input type="text" name="nome" required>
+            <label>Nome:</label>
+            <input type="text" name="nome" value="<?php echo htmlspecialchars($categoria['nome']); ?>" required>
 
-        <label>Email:</label>
-        <input type="email" name="email" required>
+            <label>Pontuacao Minima:</label>
+            <input type="number" name="pontuacao_minima" value="<?php echo $categoria['pontuacao_minima']; ?>" required>
 
-        <label>Senha:</label>
-        <input type="password" name="senha" required>
+            <label>Pontuacao Maxima:</label>
+            <input type="number" name="pontuacao_maxima" value="<?php echo $categoria['pontuacao_maxima']; ?>" required>
 
-        <label>Pontuação:</label>
-        <input type="number" name="pontuacao" required>
+            <input type="submit" value="Salvar">
 
-        <input type="submit" value="Cadastrar">
-        
-        <a href="index.php">Cancelar</a>
-    </form>
-</div>
-
+            <a href="categorias.php" class="cancelar">Cancelar</a>
+        </form>
+    </div>
 </body>
 </html>

@@ -60,6 +60,39 @@ function listarUsuarios() {
     }
 }
 
+function listarUsuariosFiltro($nome = '', $categoriaId = '', $pontuacaoMin = '', $pontuacaoMax = '') {
+    $pdo = conectar();
+    try {
+        $sql = "SELECT * FROM usuario WHERE 1=1";
+        $params = [];
+
+        if ($nome !== '') {
+            $sql .= " AND nome LIKE :nome";
+            $params[':nome'] = "%$nome%";
+        }
+        if ($categoriaId !== '') {
+            $sql .= " AND fk_categoria_aura_id = :categoria";
+            $params[':categoria'] = $categoriaId;
+        }
+        if ($pontuacaoMin !== '') {
+            $sql .= " AND pontuacao_atual >= :min";
+            $params[':min'] = $pontuacaoMin;
+        }
+        if ($pontuacaoMax !== '') {
+            $sql .= " AND pontuacao_atual <= :max";
+            $params[':max'] = $pontuacaoMax;
+        }
+
+        $sql .= " ORDER BY pontuacao_atual DESC";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        return [];
+    }
+}
+
 function buscarUsuarioPorId($id) {
     $pdo = conectar();
     try {
@@ -83,6 +116,22 @@ function modificarAura($id, $valor) {
         return $stmt->execute();
     } catch (PDOException $e) {
         return false;
+    }
+}
+
+function buscarCategoriaIdPorPontuacao($pontuacao) {
+    $pdo = conectar();
+    try {
+        $sql = "SELECT id FROM categoria_aura 
+                WHERE :pontuacao BETWEEN pontuacao_minima AND pontuacao_maxima 
+                LIMIT 1";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindParam(':pontuacao', $pontuacao);
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $resultado ? $resultado['id'] : null;
+    } catch (PDOException $e) {
+        return null;
     }
 }
 
