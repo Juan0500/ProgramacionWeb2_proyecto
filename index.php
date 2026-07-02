@@ -16,7 +16,7 @@ $categorias = listarCategoriasAura();
 
 $mensagem = '';
 if (isset($_GET['salvar'])) {
-    if ($_GET['salvar'] == 'OK') {
+    if ($_GET['salvar'] === 'OK') {
         $mensagem = '<p style="color:green;">Operacao realizada com sucesso.</p>';
     } else {
         $mensagem = '<p style="color:red;">Erro na operacao.</p>';
@@ -24,7 +24,7 @@ if (isset($_GET['salvar'])) {
 }
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>Aura Rank</title>

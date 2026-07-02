@@ -1,12 +1,12 @@
 <?php
 require_once("funcoes.php");
 
-$id = $_GET['id'];
-$pdo = conectar();
-$stmt = $pdo->prepare("SELECT * FROM usuario WHERE id = :id");
-$stmt->bindParam(':id', $id);
-$stmt->execute();
-$usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+$id = $_GET['id'] ?? null;
+if (!$id) {
+    header("location: index.php");
+    exit;
+}
+$usuario = buscarUsuarioPorId($id);
 
 if (!$usuario) {
     header("location: index.php");
@@ -14,7 +14,7 @@ if (!$usuario) {
 }
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>Aura Rank</title>
@@ -99,14 +99,14 @@ if (!$usuario) {
             <label>Nome:</label>
             <input type="text" name="nome" value="<?php echo htmlspecialchars($usuario['nome']); ?>" required><br><br>
 
-            <label>Email:</label>
-            <input type="email" name="email" value="<?php echo htmlspecialchars($usuario['email']); ?>" required><br><br>
+             <label>Email:</label>
+             <input type="email" name="email" value="<?php echo htmlspecialchars($usuario['email']); ?>" required><br><br>
 
-            <label>Senha:</label>
-            <input type="password" name="senha" value="<?php echo htmlspecialchars($usuario['senha']); ?>" required><br><br>
+             <label>Senha (confirme para salvar):</label>
+             <input type="password" name="senha" required><br><br>
 
-            <label>Pontuação:</label>
-            <input type="number" name="pontuacao" value="<?php echo $usuario['pontuacao_atual']; ?>" required><br><br>
+             <label>Pontuação:</label>
+             <input type="number" name="pontuacao" value="<?php echo $usuario['pontuacao_atual']; ?>" required><br><br>
             
             <input type="submit" value="Salvar">
             

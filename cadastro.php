@@ -88,14 +88,14 @@
         <label>Nome:</label>
         <input type="text" name="nome" required>
 
-        <label>Email:</label>
-        <input type="email" name="email" required>
+         <label>Email:</label>
+         <input type="email" name="email" required>
 
-        <label>Senha:</label>
-        <input type="password" name="senha" required>
+         <label>Senha:</label>
+         <input type="password" name="senha" required>
 
-        <label>Pontuação:</label>
-        <input type="number" name="pontuacao" required>
+         <label>Pontuação:</label>
+         <input type="number" name="pontuacao" required>
 
         <input type="submit" value="Cadastrar">
         

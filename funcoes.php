@@ -24,7 +24,7 @@ function editarUsuario($id, $nome, $email, $senha, $pontuacaoAtual, $categoriaId
         $sql = "UPDATE usuario SET nome = :nome, email = :email, senha = :senha, 
                 pontuacao_atual = :pontuacao, fk_categoria_aura_id = :categoria WHERE id = :id";
         $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':id', $id);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->bindParam(':nome', $nome);
         $stmt->bindParam(':email', $email);
         $stmt->bindParam(':senha', $senha);
@@ -41,7 +41,7 @@ function deletarUsuario($id) {
     try {
         $sql = "DELETE FROM usuario WHERE id = :id";
         $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':id', $id);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();
     } catch (PDOException $e) {
         return false;
@@ -51,7 +51,7 @@ function deletarUsuario($id) {
 function listarUsuarios() {
     $pdo = conectar();
     try {
-        $sql = "SELECT * FROM usuario ORDER BY pontuacao_atual DESC";
+        $sql = "SELECT id, nome, email, senha, pontuacao_atual, fk_categoria_aura_id FROM usuario ORDER BY pontuacao_atual DESC";
         $stmt = $pdo->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -63,7 +63,7 @@ function listarUsuarios() {
 function listarUsuariosFiltro($nome = '', $categoriaId = '', $pontuacaoMin = '', $pontuacaoMax = '') {
     $pdo = conectar();
     try {
-        $sql = "SELECT * FROM usuario WHERE 1=1";
+        $sql = "SELECT id, nome, email, senha, pontuacao_atual, fk_categoria_aura_id FROM usuario WHERE 1=1";
         $params = [];
 
         if ($nome !== '') {
@@ -96,9 +96,9 @@ function listarUsuariosFiltro($nome = '', $categoriaId = '', $pontuacaoMin = '',
 function buscarUsuarioPorId($id) {
     $pdo = conectar();
     try {
-        $sql = "SELECT * FROM usuario WHERE id = :id";
+        $sql = "SELECT id, nome, email, senha, pontuacao_atual, fk_categoria_aura_id FROM usuario WHERE id = :id";
         $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':id', $id);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
@@ -112,7 +112,14 @@ function modificarAura($id, $valor) {
         $sql = "UPDATE usuario SET pontuacao_atual = pontuacao_atual + :valor WHERE id = :id";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':valor', $valor);
-        $stmt->bindParam(':id', $id);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $novaPontuacao = $pdo->query("SELECT pontuacao_atual FROM usuario WHERE id = " . (int)$id)->fetchColumn();
+        $categoriaId = buscarCategoriaIdPorPontuacao($novaPontuacao);
+        $sql = "UPDATE usuario SET fk_categoria_aura_id = :cat WHERE id = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':cat', $categoriaId, PDO::PARAM_INT);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();
     } catch (PDOException $e) {
         return false;
@@ -123,10 +130,19 @@ function buscarCategoriaIdPorPontuacao($pontuacao) {
     $pdo = conectar();
     try {
         $sql = "SELECT id FROM categoria_aura 
-                WHERE :pontuacao BETWEEN pontuacao_minima AND pontuacao_maxima 
+                WHERE CAST(:pontuacao AS SIGNED) BETWEEN pontuacao_minima AND pontuacao_maxima 
                 LIMIT 1";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':pontuacao', $pontuacao);
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($resultado) {
+            return $resultado['id'];
+        }
+        $min = (int) $pdo->query("SELECT MIN(pontuacao_minima) FROM categoria_aura")->fetchColumn();
+        $order = $pontuacao < $min ? "ASC" : "DESC";
+        $sql = "SELECT id FROM categoria_aura ORDER BY pontuacao_minima $order LIMIT 1";
+        $stmt = $pdo->prepare($sql);
         $stmt->execute();
         $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
         return $resultado ? $resultado['id'] : null;
@@ -139,10 +155,19 @@ function calcularStatusAura($pontuacao) {
     $pdo = conectar();
     try {
         $sql = "SELECT nome FROM categoria_aura 
-                WHERE :pontuacao BETWEEN pontuacao_minima AND pontuacao_maxima 
+                WHERE CAST(:pontuacao AS SIGNED) BETWEEN pontuacao_minima AND pontuacao_maxima 
                 LIMIT 1";
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':pontuacao', $pontuacao);
+        $stmt->execute();
+        $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($resultado) {
+            return $resultado['nome'];
+        }
+        $min = (int) $pdo->query("SELECT MIN(pontuacao_minima) FROM categoria_aura")->fetchColumn();
+        $order = $pontuacao < $min ? "ASC" : "DESC";
+        $sql = "SELECT nome FROM categoria_aura ORDER BY pontuacao_minima $order LIMIT 1";
+        $stmt = $pdo->prepare($sql);
         $stmt->execute();
         $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
         return $resultado ? $resultado['nome'] : "Sem categoria";
@@ -183,7 +208,7 @@ function buscarCategoriaAuraPorId($id) {
     try {
         $sql = "SELECT * FROM categoria_aura WHERE id = :id";
         $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':id', $id);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
@@ -197,7 +222,7 @@ function editarCategoriaAura($id, $nome, $pontuacaoMinima, $pontuacaoMaxima) {
         $sql = "UPDATE categoria_aura SET nome = :nome, pontuacao_minima = :min, 
                 pontuacao_maxima = :max WHERE id = :id";
         $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':id', $id);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         $stmt->bindParam(':nome', $nome);
         $stmt->bindParam(':min', $pontuacaoMinima);
         $stmt->bindParam(':max', $pontuacaoMaxima);
@@ -212,7 +237,7 @@ function deletarCategoriaAura($id) {
     try {
         $sql = "DELETE FROM categoria_aura WHERE id = :id";
         $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':id', $id);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
         return $stmt->execute();
     } catch (PDOException $e) {
         return false;
@@ -227,45 +252,7 @@ function inserirHistoricoPontuacao($usuarioId, $motivo, $pontos) {
         $stmt = $pdo->prepare($sql);
         $stmt->bindParam(':motivo', $motivo);
         $stmt->bindParam(':pontos', $pontos);
-        $stmt->bindParam(':usuario', $usuarioId);
-        return $stmt->execute();
-    } catch (PDOException $e) {
-        return false;
-    }
-}
-
-function listarHistoricoPorUsuario($usuarioId) {
-    $pdo = conectar();
-    try {
-        $sql = "SELECT * FROM historico_pontuacao WHERE fk_usuario_id = :usuario ORDER BY data_registro DESC";
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':usuario', $usuarioId);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-        return [];
-    }
-}
-
-function listarConquistas() {
-    $pdo = conectar();
-    try {
-        $sql = "SELECT * FROM conquista ORDER BY nome ASC";
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-        return [];
-    }
-}
-
-function vincularConquistaUsuario($usuarioId, $conquistaId) {
-    $pdo = conectar();
-    try {
-        $sql = "INSERT INTO usuario_conquista (fk_usuario_id, fk_conquista_id) VALUES (:usuario, :conquista)";
-        $stmt = $pdo->prepare($sql);
-        $stmt->bindParam(':usuario', $usuarioId);
-        $stmt->bindParam(':conquista', $conquistaId);
+        $stmt->bindValue(':usuario', $usuarioId, PDO::PARAM_INT);
         return $stmt->execute();
     } catch (PDOException $e) {
         return false;

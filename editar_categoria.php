@@ -1,7 +1,11 @@
 <?php
 require_once("funcoes.php");
 
-$id = $_GET['id'];
+$id = $_GET['id'] ?? null;
+if (!$id) {
+    header("location: categorias.php");
+    exit;
+}
 $categoria = buscarCategoriaAuraPorId($id);
 
 if (!$categoria) {
@@ -10,7 +14,7 @@ if (!$categoria) {
 }
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>Aura Rank</title>

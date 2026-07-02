@@ -1,6 +1,5 @@
 <?php
-// Emanuel
-require("funcoes.php");
+require_once("funcoes.php");
 
 if ($_POST) {
     //Inserir Novo Usuario
@@ -14,6 +13,8 @@ if ($_POST) {
         $resultado = inserirUsuario($nome, $email, $senha, $pontuacao, $categoriaId);
 
         if ($resultado) {
+            $novoId = conectar()->query("SELECT MAX(id) FROM usuario")->fetchColumn();
+            inserirHistoricoPontuacao($novoId, "Cadastro inicial", $pontuacao);
             header("location: index.php?salvar=OK");
         } else {
             header("location: index.php?salvar=ERROR");
@@ -29,7 +30,12 @@ if ($_POST) {
         $pontuacao = $_POST["pontuacao"];
         $categoriaId = buscarCategoriaIdPorPontuacao($pontuacao);
 
-        $resultado = editarUsuario($id, $nome, $email, $senha, $pontuacao, $categoriaId);
+        $usuario = buscarUsuarioPorId($id);
+        if ($usuario && $usuario['senha'] === $senha) {
+            $resultado = editarUsuario($id, $nome, $email, $usuario['senha'], $pontuacao, $categoriaId);
+        } else {
+            $resultado = false;
+        }
 
         if ($resultado) {
             header("location: index.php?salvar=OK");
@@ -96,5 +102,5 @@ if ($_POST) {
         }
     }
 } else {
-    header("location: index.html");
+    header("location: index.php");
 }
